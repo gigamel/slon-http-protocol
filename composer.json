@@ -1,4 +1,5 @@
 {
+    "name": "gigamel/slon-http-protocol",
     "autoload": {
         "psr-4": {
             "Slon\\Http\\Protocol\\": "src/"
