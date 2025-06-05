@@ -9,8 +9,8 @@ use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UriInterface;
 use Slon\Http\Protocol\ClientMessage\Method;
-use Slon\Http\Protocol\Headers;
-use Slon\Http\Protocol\HeadersInterface;
+use Slon\Http\Protocol\Message\Headers;
+use Slon\Http\Protocol\Message\HeadersInterface;
 use Slon\Http\Protocol\Stream\PhpInputStream;
 
 class ClientMessage implements RequestInterface
