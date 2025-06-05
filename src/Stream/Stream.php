@@ -6,7 +6,7 @@ namespace Slon\Http\Protocol\Stream;
 
 use Psr\Http\Message\StreamInterface;
 
-abstract class Stream implements StreamInterface
+class Stream implements StreamInterface
 {
     protected string $resource;
     

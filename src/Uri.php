@@ -7,6 +7,7 @@ namespace Slon\Http\Protocol;
 use const FILTER_VALIDATE_URL;
 
 use Psr\Http\Message\UriInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 use function is_int;
 use function parse_url;

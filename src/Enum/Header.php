@@ -13,4 +13,6 @@ final readonly class Header
     public const string HOST = 'Host';
     public const string LOCATION = 'Location';
     public const string REFERER = 'Referer';
+    
+    private function __construct() {}
 }

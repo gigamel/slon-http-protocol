@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Slon\Http\Protocol\ClientMessage;
 
-final class Method
+final readonly class Method
 {
     public const string CONNECT = 'CONNECT';
     public const string DELETE = 'DELETE';
@@ -27,4 +27,6 @@ final class Method
         self::PUT,
         self::TRACE,
     ];
+    
+    private function __construct() {}
 }

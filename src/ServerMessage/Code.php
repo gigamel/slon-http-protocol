@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Slon\Http\Protocol\ServerMessage;
 
-final class Code
+final readonly class Code
 {
     // 1xx: Informational
     public const int CONTINUE = 100;
@@ -173,4 +173,91 @@ final class Code
         self::SSL_HANDSHAKE_FAILED => 'SSL Handshake Failed',
         self::INVALID_SSL_CERTIFICATE => 'Invalid SSL Certificate',
     ];
+    
+    public const array ALL = [
+        // 1xx: Informational
+        self::CONTINUE,
+        self::SWITCHING_PROTOCOLS,
+        self::PROCESSING,
+        self::EARLY_HINTS,
+
+        // 2xx: Success
+        self::OK,
+        self::CREATED,
+        self::ACCEPTED,
+        self::NON_AUTHORITATIVE_INFORMATION,
+        self::NO_CONTENT,
+        self::RESET_CONTENT,
+        self::PARTIAL_CONTENT,
+        self::MULTI_STATUS,
+        self::ALREADY_REPORTED,
+        self::IM_USED,
+
+        // 3xx: Redirection
+        self::MULTIPLE_CHOICES,
+        self::MOVED_PERMANENTLY,
+        self::FOUND,
+        self::SEE_OTHER,
+        self::NOT_MODIFIED,
+        self::USE_PROXY,
+        self::TEMPORARY_REDIRECT,
+        self::PERMANENT_REDIRECT,
+
+        // 4XX: Client Error
+        self::BAD_REQUEST,
+        self::UNAUTHORIZED,
+        self::PAYMENT_REQUIRED,
+        self::FORBIDDEN,
+        self::NOT_FOUND,
+        self::METHOD_NOT_ALLOWED,
+        self::NOT_ACCEPTABLE,
+        self::PROXY_AUTHENTICATION_REQUIRED,
+        self::REQUEST_TIMEOUT,
+        self::CONFLICT,
+        self::GONE,
+        self::LENGTH_REQUIRED,
+        self::PRECONDITION_FAILED,
+        self::PAYLOAD_TOO_LARGE,
+        self::URI_TOO_LONG,
+        self::UNSUPPORTED_MEDIA_TYPE,
+        self::RANGE_NOT_SATISFIABLE,
+        self::EXPECTATION_FAILED,
+        self::I_M_A_TEAPOT,
+        self::AUTHENTICATION_TIMEOUT,
+        self::MISDIRECTED_REQUEST,
+        self::UNPROCESSABLE_ENTITY,
+        self::LOCKED,
+        self::FAILED_DEPENDENCY,
+        self::TOO_EARLY,
+        self::UPGRADE_REQUIRED,
+        self::PRECONDITION_REQUIRED,
+        self::TOO_MANY_REQUESTS,
+        self::REQUEST_HEADER_FIELDS_TOO_LARGE,
+        self::RETRY_WITH,
+        self::UNAVAILABLE_FOR_LEGAL_REASONS,
+        self::CLIENT_CLOSED_REQUEST,
+
+        // 5XX: Server Error
+        self::INTERNAL_SERVER_ERROR,
+        self::NOT_IMPLEMENTED,
+        self::BAD_GATEWAY,
+        self::SERVICE_UNAVAILABLE,
+        self::GATEWAY_TIMEOUT,
+        self::HTTP_VERSION_NOT_SUPPORTED,
+        self::VARIANT_ALSO_NEGOTIATES,
+        self::INSUFFICIENT,
+        self::LOOP_DETECTED,
+        self::BANDWIDTH_LIMIT_EXCEEDED,
+        self::NOT_EXTENDED,
+        self::NETWORK_AUTHENTICATION_REQUIRED,
+        self::UNKNOWN_ERROR,
+        self::WEB_SERVER_IS_DOWN,
+        self::CONNECTION_TIMED_OUT,
+        self::ORIGIN_IS_UNREACHABLE,
+        self::A_TIMEOUT_OCCURRED,
+        self::SSL_HANDSHAKE_FAILED,
+        self::INVALID_SSL_CERTIFICATE,
+    ];
+    
+    private function __construct() {}
 }
