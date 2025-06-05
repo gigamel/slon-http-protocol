@@ -107,6 +107,10 @@ class ClientMessage implements RequestInterface
     
     public function withBody(StreamInterface $body): MessageInterface
     {
+        if ($this->getBody() === $body) {
+            return $this;
+        }
+        
         $cloned = clone $this;
         $cloned->body = $body;
         return $cloned;
@@ -130,6 +134,10 @@ class ClientMessage implements RequestInterface
     
     public function withRequestTarget(string $requestTarget): RequestInterface
     {
+        if ($this->requestTarget === $requestTarget) {
+            return $this;
+        }
+        
         $cloned = clone $this;
         $cloned->requestTarget = $requestTarget;
         return $cloned;
@@ -142,6 +150,10 @@ class ClientMessage implements RequestInterface
     
     public function withMethod(string $method): RequestInterface
     {
+        if ($this->method === $method) {
+            return $this;
+        }
+        
         $cloned = clone $this;
         $cloned->setMethod($method);
         return $cloned;
@@ -156,8 +168,17 @@ class ClientMessage implements RequestInterface
         UriInterface $uri,
         bool $preserveHost = false,
     ): RequestInterface {
+        if ($this->getUri() === $uri) {
+            return $this;
+        }
+        
         $cloned = clone $this;
-        $cloned->uri = $uri; // Todo
+        if ($preserveHost) {
+            $cloned->uri = $uri->withHost($this->getUri()->getHost());
+        } else {
+            $cloned->uri = $uri;
+        }
+        
         return $cloned;
     }
     

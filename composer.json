@@ -5,6 +5,11 @@
             "Slon\\Http\\Protocol\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Slon\\Http\\Protocol\\Tests\\": "tests/"
+        }
+    },
     "require-dev": {
         "phpunit/phpunit": "^12.1"
     },
