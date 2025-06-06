@@ -12,6 +12,7 @@ use RuntimeException;
 use Slon\Http\Protocol\Stream\Stream;
 
 use function dirname;
+use function is_file;
 use function is_dir;
 use function sprintf;
 
@@ -87,9 +88,16 @@ class UploadedFile implements UploadedFileInterface
     
     public function moveTo(string $targetPath): void
     {
+        if (is_file($targetPath)) {
+            throw new RuntimeException(sprintf(
+                'File "%s" already exists',
+                $targetPath,
+            ));
+        }
+        
         if (!is_dir(dirname($targetPath))) {
             throw new RuntimeException(sprintf(
-                'Resource %s cannot be uploaded. The directory does not exist',
+                'Resource "%s" cannot be uploaded. The directory does not exist',
                 $targetPath,
             ));
         }
