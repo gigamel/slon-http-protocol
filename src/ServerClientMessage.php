@@ -131,6 +131,12 @@ class ServerClientMessage extends ClientMessage implements ServerRequestInterfac
     
     public function withoutAttribute(string $name): ServerRequestInterface
     {
-        return $this; // Todo
+        if (!$this->attributes->has($name)) {
+            return $this;
+        }
+        
+        $cloned = clone $this;
+        $cloned->attributes->remove($name);
+        return $cloned;
     }
 }

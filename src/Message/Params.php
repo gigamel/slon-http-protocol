@@ -6,6 +6,7 @@ namespace Slon\Http\Protocol\Message;
 
 use InvalidArgumentException;
 
+use function array_key_exists;
 use function ctype_digit;
 use function is_numeric;
 use function is_scalar;
@@ -37,6 +38,16 @@ class Params
         $this->params[$name] = $this->normalizeValue($name, $value);
     }
     
+    public function has(string $name): bool
+    {
+        return array_key_exists($name, $this->params);
+    }
+    
+    public function remove(string $name): void
+    {
+        unset($this->params[$name]);
+    }
+
     /**
      * @throws InvalidArgumentException
      */
