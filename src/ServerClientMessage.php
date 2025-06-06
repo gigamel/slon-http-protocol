@@ -6,19 +6,24 @@ namespace Slon\Http\Protocol;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;
-use Slon\Http\Protocol\ServerMessage\ServerParams;
+use Slon\Http\Protocol\Message\Params;
+use Slon\Http\Protocol\Message\QueryParams;
 use Slon\Http\Protocol\ServerMessage\UploadedFiles;
 
 class ServerClientMessage extends ClientMessage implements ServerRequestInterface
 {
-    protected ServerParams $queryParams;
+    protected QueryParams $queryParams;
     
-    protected ServerParams $serverParams;
+    protected Params $serverParams;
     
-    protected ServerParams $cookieParams;
+    protected Params $cookieParams;
     
     protected UploadedFiles $uploadedFiles;
     
+    protected Params $attributes;
+    
+    protected array|object|null $parsedBody = null;
+
     public function __construct(
         string $uri,
         string $method,
@@ -32,20 +37,21 @@ class ServerClientMessage extends ClientMessage implements ServerRequestInterfac
     ) {
         parent::__construct($uri, $method, $body, $headers, $protocolVersion);
         
-        $this->queryParams = new ServerMessage($queryParams);
-        $this->serverParams = new ServerMessage($serverParams);
-        $this->cookieParams = new ServerMessage($cookieParams);
+        $this->queryParams = new QueryParams($queryParams);
+        $this->serverParams = new Params($serverParams);
+        $this->cookieParams = new Params($cookieParams);
         $this->uploadedFiles = new UploadedFiles($uploadedFiles);
+        $this->attributes = new Params();
     }
     
     public function getAttribute(string $name, $default = null): mixed
     {
-        return $default; // Todo
+        return $this->attributes->get($name, $default);
     }
     
     public function getAttributes(): array
     {
-        return []; // Todo
+        return $this->attributes->all();
     }
     
     public function getCookieParams(): array
@@ -75,28 +81,52 @@ class ServerClientMessage extends ClientMessage implements ServerRequestInterfac
     
     public function withAttribute(string $name, $value): ServerRequestInterface
     {
-        return $this; // Todo
+        if ($this->attributes->get($name) === $value) {
+            return $this;
+        }
+        
+        $cloned = clone $this;
+        $cloned->attributes->add($name, $value);
+        return $cloned;
     }
     
     public function withCookieParams(array $cookies): ServerRequestInterface
     {
-        return $this; // Todo
+        if ($this->cookieParams->all() === $cookies) {
+            return $this;
+        }
+        
+        $cloned = clone $this;
+        $cloned->cookieParams = new Params($cookies);
+        return $cloned;
     }
     
     public function withParsedBody($data): ServerRequestInterface
     {
-        return $this;
+        return $this; // Todo
     }
     
     public function withQueryParams(array $query): ServerRequestInterface
     {
-        return $this; // Todo
+        if ($this->queryParams->all() === $query) {
+            return $this;
+        }
+        
+        $cloned = clone $this;
+        $cloned->queryParams = new QueryParams($query);
+        return $cloned;
     }
     
     public function withUploadedFiles(
         array $uploadedFiles,
     ): ServerRequestInterface {
-        return $this; // Todo
+        if ($this->uploadedFiles->all() === $uploadedFiles) {
+            return $this;
+        }
+        
+        $cloned = clone $this;
+        $cloned->uploadedFiles = new UploadedFiles($uploadedFiles);
+        return $cloned;
     }
     
     public function withoutAttribute(string $name): ServerRequestInterface
