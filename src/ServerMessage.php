@@ -22,8 +22,8 @@ class ServerMessage extends AbstractMessage implements ResponseInterface
         string $content = '',
         int $statusCode = Code::OK,
         array $headers = [],
-        string $protocolVersion = Version::HTTP_1_1,
         ?StreamInterface $body = null,
+        string $protocolVersion = Version::HTTP_1_1,
     ) {
         if (!$body instanceof StreamInterface) {
             $body = new Stream('php://temp', 'w+');

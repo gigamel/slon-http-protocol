@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace Slon\Http\Protocol;
 
+use InvalidArgumentException;
 use Psr\Http\Message\UriInterface;
 
 use function is_int;
 use function parse_url;
+use function preg_match;
+use function sprintf;
 
 class Uri implements UriInterface
 {
@@ -21,7 +24,7 @@ class Uri implements UriInterface
     
     protected string $userInfo = '';
     
-    protected string $path;
+    protected string $path = '';
     
     protected string $query = '';
     
@@ -51,7 +54,9 @@ class Uri implements UriInterface
             $this->port = (int) $chunks['port'];
         }
         
-        $this->path = $chunks['path'];
+        if (isset($chunks['path'])) {
+            $this->path = $chunks['path'];
+        }
         
         if (isset($chunks['query'])) {
             $this->query = '?' . $chunks['query'];
@@ -118,6 +123,13 @@ class Uri implements UriInterface
             return $this;
         }
         
+        if (!preg_match('/^[a-z]+:\/\/$/', $scheme)) {
+            throw new InvalidArgumentException(sprintf(
+                'Unsupported scheme "%s"',
+                $scheme,
+            ));
+        }
+        
         $cloned = clone $this;
         $cloned->scheme = $scheme;
         return $cloned;
@@ -132,6 +144,10 @@ class Uri implements UriInterface
             return $this;
         }
         
+        if (!preg_match('/^[a-zA-Z0-9]+$/', $user)) {
+            throw new InvalidArgumentException('Incorrect user info');
+        }
+        
         $cloned = clone $this;
         $cloned->userInfo = $userInfo;
         return $cloned;
@@ -141,6 +157,13 @@ class Uri implements UriInterface
     {
         if ($this->host === $host) {
             return $this;
+        }
+        
+        if (!preg_match('/^[a-z0-9]+([a-z0-9-]+\.[a-z]+)?$/', $host)) {
+            throw new InvalidArgumentException(sprintf(
+                'Incorrect host "%s"',
+                $host,
+            ));
         }
         
         $cloned = clone $this;
@@ -154,6 +177,13 @@ class Uri implements UriInterface
             return $this;
         }
         
+        if (($port ?? 0) < 1) {
+            throw new InvalidArgumentException(sprintf(
+                'Incorrect port "%d"',
+                $port,
+            ));
+        }
+        
         $cloned = clone $this;
         $cloned->port = $port;
         return $cloned;
@@ -163,6 +193,13 @@ class Uri implements UriInterface
     {
         if ($this->path === $path) {
             return $this;
+        }
+        
+        if (!preg_match('/^\/(([a-z0-9-]+\/?)+)?$/', $path)) {
+            throw new InvalidArgumentException(sprintf(
+                'Incorrect path "%s"',
+                $path,
+            ));
         }
         
         $cloned = clone $this;

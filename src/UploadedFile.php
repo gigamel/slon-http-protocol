@@ -93,7 +93,7 @@ class UploadedFile implements UploadedFileInterface
     {
         if (is_file($targetPath)) {
             throw new InvalidArgumentException(sprintf(
-                'File "%s" already exists',
+                'Resource "%s" already exists',
                 $targetPath,
             ));
         }
