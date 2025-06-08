@@ -166,6 +166,8 @@ class Stream implements StreamInterface
             );
         }
         
+        $this->rewind();
+        
         $contents = '';
         while (!$this->eof()) {
             $contents .= fgets($this->stream);
@@ -190,7 +192,7 @@ class Stream implements StreamInterface
     protected function modeContains(string $mode): bool
     {
         if ($this->stream) {
-            return str_contains($this->getMetadata('mode'), $mode);
+            return str_contains($this->getMetadata('mode') ?? '', $mode);
         }
         
         return false;
