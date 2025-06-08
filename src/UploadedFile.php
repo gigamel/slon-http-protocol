@@ -6,6 +6,7 @@ namespace Slon\Http\Protocol;
 
 use const UPLOAD_ERR_OK;
 
+use InvalidArgumentException;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UploadedFileInterface;
 use RuntimeException;
@@ -28,6 +29,8 @@ class UploadedFile implements UploadedFileInterface
         7 => 'Failed to write file to disk.',
         8 => 'A PHP extension stopped the file upload.',
     ];
+    
+    protected string $resource;
 
     protected StreamInterface $stream;
     
@@ -40,7 +43,7 @@ class UploadedFile implements UploadedFileInterface
     protected ?string $clientMediaType;
 
     public function __construct(
-        StreamInterface $stream,
+        string $resource,
         int $error,
         ?int $size = null,
         ?string $clientFilename = null,
@@ -50,11 +53,11 @@ class UploadedFile implements UploadedFileInterface
             throw new RuntimeException(sprintf(
                 'Error when uploading a resource "%s" to the server. Reason: %s',
                 self::ERROR_MESSAGE[$error] ?? 'Unknown error',
-                $stream->getMetadata('uri'),
+                $resource,
             ));
         }
         
-        $this->stream = $stream;
+        $this->resource = $resource;
         $this->error = $error;
         $this->size = $size;
         $this->clientFilename = $clientFilename;
@@ -83,35 +86,33 @@ class UploadedFile implements UploadedFileInterface
     
     public function getStream(): StreamInterface
     {
-        return $this->stream;
+        return $this->stream ??= new Stream($this->resource, 'rb');
     }
     
     public function moveTo(string $targetPath): void
     {
         if (is_file($targetPath)) {
-            throw new RuntimeException(sprintf(
+            throw new InvalidArgumentException(sprintf(
                 'File "%s" already exists',
                 $targetPath,
             ));
         }
         
         if (!is_dir(dirname($targetPath))) {
-            throw new RuntimeException(sprintf(
+            throw new InvalidArgumentException(sprintf(
                 'Resource "%s" cannot be uploaded. The directory does not exist',
                 $targetPath,
             ));
         }
         
-        $targetStream = new Stream($targetPath, 'wb+');
-        
-        $this->getStream()->rewind();
-        while (!$this->getStream()->eof()) {
-            $targetStream->write(
-                $this->getStream()->read(1024),
-            );
+        try {
+            $targetStream = new Stream($targetPath, 'wb+');
+            while (!$this->getStream()->eof()) {
+                $targetStream->write($this->getStream()->read(2048));
+            }
+        } finally {
+            $targetStream->close();
+            $this->getStream()->close();
         }
-        
-        $targetStream->close();
-        $this->getStream()->close();
     }
 }

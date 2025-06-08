@@ -17,6 +17,6 @@ class QueryParams extends Params
             return $value;
         }
         
-        return parent::normalizeScalarValue($name, $value);
+        return parent::normalizeValue($name, $value);
     }
 }

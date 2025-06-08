@@ -10,6 +10,9 @@ use Slon\Http\Protocol\Message\Params;
 use Slon\Http\Protocol\Message\QueryParams;
 use Slon\Http\Protocol\ServerMessage\UploadedFiles;
 
+use function is_array;
+use function is_object;
+
 class ServerClientMessage extends ClientMessage implements ServerRequestInterface
 {
     protected QueryParams $queryParams;
@@ -35,7 +38,7 @@ class ServerClientMessage extends ClientMessage implements ServerRequestInterfac
         ?StreamInterface $body = null,
         string $protocolVersion = Version::HTTP_1_1,
     ) {
-        parent::__construct($uri, $method, $body, $headers, $protocolVersion);
+        parent::__construct($uri, $method, $headers, $body, $protocolVersion);
         
         $this->queryParams = new QueryParams($queryParams);
         $this->serverParams = new Params($serverParams);
@@ -61,7 +64,7 @@ class ServerClientMessage extends ClientMessage implements ServerRequestInterfac
     
     public function getParsedBody()
     {
-        return null; // Todo
+        return $this->parsedBody;
     }
     
     public function getQueryParams(): array
@@ -92,10 +95,6 @@ class ServerClientMessage extends ClientMessage implements ServerRequestInterfac
     
     public function withCookieParams(array $cookies): ServerRequestInterface
     {
-        if ($this->cookieParams->all() === $cookies) {
-            return $this;
-        }
-        
         $cloned = clone $this;
         $cloned->cookieParams = new Params($cookies);
         return $cloned;
@@ -103,15 +102,17 @@ class ServerClientMessage extends ClientMessage implements ServerRequestInterfac
     
     public function withParsedBody($data): ServerRequestInterface
     {
-        return $this; // Todo
+        if (is_array($data) || is_object($data)) {
+            $cloned = clone $this;
+            $cloned->parsedBody = $cloned;
+            return $cloned;
+        }
+        
+        return $this;
     }
     
     public function withQueryParams(array $query): ServerRequestInterface
     {
-        if ($this->queryParams->all() === $query) {
-            return $this;
-        }
-        
         $cloned = clone $this;
         $cloned->queryParams = new QueryParams($query);
         return $cloned;
@@ -120,10 +121,6 @@ class ServerClientMessage extends ClientMessage implements ServerRequestInterfac
     public function withUploadedFiles(
         array $uploadedFiles,
     ): ServerRequestInterface {
-        if ($this->uploadedFiles->all() === $uploadedFiles) {
-            return $this;
-        }
-        
         $cloned = clone $this;
         $cloned->uploadedFiles = new UploadedFiles($uploadedFiles);
         return $cloned;
