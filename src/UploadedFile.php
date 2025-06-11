@@ -29,8 +29,6 @@ class UploadedFile implements UploadedFileInterface
         7 => 'Failed to write file to disk.',
         8 => 'A PHP extension stopped the file upload.',
     ];
-    
-    protected string $resource;
 
     protected StreamInterface $stream;
     
@@ -43,9 +41,9 @@ class UploadedFile implements UploadedFileInterface
     protected ?string $clientMediaType;
 
     public function __construct(
-        string $resource,
-        int $error,
+        StreamInterface $stream,
         ?int $size = null,
+        int $error = UPLOAD_ERR_OK,
         ?string $clientFilename = null,
         ?string $clientMediaType = null,
     ) {
@@ -53,13 +51,13 @@ class UploadedFile implements UploadedFileInterface
             throw new RuntimeException(sprintf(
                 'Error when uploading a resource "%s" to the server. Reason: %s',
                 self::ERROR_MESSAGE[$error] ?? 'Unknown error',
-                $resource,
+                $stream->getMetadata('uri'),
             ));
         }
         
-        $this->resource = $resource;
+        $this->stream = $stream;
+        $this->size = $size ?? $stream->getSize();
         $this->error = $error;
-        $this->size = $size;
         $this->clientFilename = $clientFilename;
         $this->clientMediaType = $clientMediaType;
     }
@@ -86,7 +84,7 @@ class UploadedFile implements UploadedFileInterface
     
     public function getStream(): StreamInterface
     {
-        return $this->stream ??= new Stream($this->resource, 'rb');
+        return $this->stream;
     }
     
     public function moveTo(string $targetPath): void

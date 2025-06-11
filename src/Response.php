@@ -12,7 +12,7 @@ use Slon\Http\Protocol\Stream\Stream;
 use function assert;
 use function in_array;
 
-class ServerMessage extends AbstractMessage implements ResponseInterface
+class Response extends AbstractMessage implements ResponseInterface
 {
     protected int $statusCode;
     
@@ -22,8 +22,8 @@ class ServerMessage extends AbstractMessage implements ResponseInterface
         string $content = '',
         int $statusCode = Code::OK,
         array $headers = [],
-        ?StreamInterface $body = null,
         string $protocolVersion = Version::HTTP_1_1,
+        ?StreamInterface $body = null,
     ) {
         if (!$body instanceof StreamInterface) {
             $body = new Stream('php://temp', 'w+');

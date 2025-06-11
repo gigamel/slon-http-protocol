@@ -12,8 +12,9 @@ use Slon\Http\Protocol\Stream\PhpInputStream;
 
 use function assert;
 use function in_array;
+use function is_string;
 
-class ClientMessage extends AbstractMessage implements RequestInterface
+class Request extends AbstractMessage implements RequestInterface
 {
     protected UriInterface $uri;
 
@@ -22,13 +23,16 @@ class ClientMessage extends AbstractMessage implements RequestInterface
     protected string $requestTarget = '';
 
     public function __construct(
-        string $uri,
         string $method,
+        string|UriInterface $uri,
         array $headers = [],
         ?StreamInterface $body = null,
         string $protocolVersion = Version::HTTP_1_1,
     ) {
-        $this->uri = new Uri($uri);
+        if (is_string($uri)) {
+            $this->uri = new Uri($uri);
+        }
+        
         $this->setMethod($method);
         
         parent::__construct(

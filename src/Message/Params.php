@@ -62,11 +62,11 @@ class Params
             ));
         }
         
-        if (ctype_digit($value)) {
+        if (is_string($value) && ctype_digit($value)) {
             return (int) $value;
         }
         
-        if (is_numeric($value)) {
+        if (is_string($value) && is_numeric($value)) {
             return (float) $value;
         }
         

@@ -6,6 +6,7 @@ namespace Slon\Http\Protocol;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;
+use Psr\Http\Message\UriInterface;
 use Slon\Http\Protocol\Message\Params;
 use Slon\Http\Protocol\Message\QueryParams;
 use Slon\Http\Protocol\ServerMessage\UploadedFiles;
@@ -13,7 +14,7 @@ use Slon\Http\Protocol\ServerMessage\UploadedFiles;
 use function is_array;
 use function is_object;
 
-class ServerClientMessage extends ClientMessage implements ServerRequestInterface
+class ServerRequest extends Request implements ServerRequestInterface
 {
     protected QueryParams $queryParams;
     
@@ -28,8 +29,8 @@ class ServerClientMessage extends ClientMessage implements ServerRequestInterfac
     protected array|object|null $parsedBody = null;
 
     public function __construct(
-        string $uri,
         string $method,
+        string|UriInterface $uri,
         array $headers = [],
         array $queryParams = [],
         array $serverParams = [],
@@ -38,7 +39,7 @@ class ServerClientMessage extends ClientMessage implements ServerRequestInterfac
         ?StreamInterface $body = null,
         string $protocolVersion = Version::HTTP_1_1,
     ) {
-        parent::__construct($uri, $method, $headers, $body, $protocolVersion);
+        parent::__construct($method, $uri, $headers, $body, $protocolVersion);
         
         $this->queryParams = new QueryParams($queryParams);
         $this->serverParams = new Params($serverParams);

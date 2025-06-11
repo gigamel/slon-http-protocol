@@ -16,7 +16,6 @@ use function fseek;
 use function fstat;
 use function ftell;
 use function fwrite;
-use function is_resource;
 use function sprintf;
 use function stream_get_meta_data;
 use function str_contains;
@@ -59,10 +58,7 @@ class Stream implements StreamInterface
     
     public function detach()
     {
-        if ($this->stream) {
-            $this->stream = null;
-        }
-        
+        $this->close();
         return $this->stream;
     }
     
@@ -105,6 +101,8 @@ class Stream implements StreamInterface
     public function seek(int $offset, int $whence = \SEEK_SET): void
     {
         if (!$this->isSeekable()) {
+            $this->close();
+            
             throw new RuntimeException(
                 sprintf('Resource "%s" can not be seek', $this->resource),
             );
@@ -133,6 +131,8 @@ class Stream implements StreamInterface
             return fwrite($this->stream, $string);
         }
         
+        $this->close();
+        
         throw new RuntimeException(
             sprintf('Resource "%s" can not be written', $this->resource),
         );
@@ -153,6 +153,8 @@ class Stream implements StreamInterface
             return fread($this->stream, $length);
         }
         
+        $this->close();
+        
         throw new RuntimeException(
             sprintf('Resource "%s" can not be read', $this->resource),
         );
@@ -161,6 +163,8 @@ class Stream implements StreamInterface
     public function getContents(): string
     {
         if (!$this->isReadable()) {
+            $this->close();
+            
             throw new RuntimeException(
                 sprintf('Resource "%s" can not be read', $this->resource),
             );
@@ -182,11 +186,7 @@ class Stream implements StreamInterface
             return null;
         }
         
-        if (null === $this->metaData) {
-            $this->metaData = stream_get_meta_data($this->stream);
-        }
-        
-        return $this->metaData[$key] ?? null;
+        return stream_get_meta_data($this->stream)[$key] ?? null;
     }
     
     protected function modeContains(string $mode): bool

@@ -3,7 +3,12 @@
     "autoload": {
         "psr-4": {
             "Slon\\Http\\Protocol\\": "src/"
-        }
+        },
+        "files": [
+            "functions/assert_server_file.php",
+            "functions/normalize_server_files.php",
+            "functions/parse_headers_from_server.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
@@ -14,6 +19,7 @@
         "phpunit/phpunit": "^12.1"
     },
     "require": {
-        "psr/http-message": "^2.0"
+        "psr/http-message": "^2.0",
+        "psr/http-factory": "^1.1"
     }
 }
