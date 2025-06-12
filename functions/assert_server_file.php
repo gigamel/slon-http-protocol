@@ -11,7 +11,7 @@ use function assert;
 /**
  * @throws AssertionError
  */
-function assertServerFile(array $file): void
+function assert_server_file(array $file): void
 {
     assert(
         isset($file['tmp_name'])

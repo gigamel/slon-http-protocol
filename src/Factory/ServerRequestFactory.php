@@ -15,8 +15,8 @@ use Slon\Http\Protocol\Uri;
 use function array_map;
 use function is_string;
 
-use function Slon\Http\Protocol\normalizeServerFiles;
-use function Slon\Http\Protocol\parseHeadersFromServer;
+use function Slon\Http\Protocol\normalize_server_files;
+use function Slon\Http\Protocol\parse_server_headers;
 
 class ServerRequestFactory implements ServerRequestFactoryInterface
 {
@@ -57,7 +57,7 @@ class ServerRequestFactory implements ServerRequestFactoryInterface
             );
         }
         
-        $headers = parseHeadersFromServer($serverParams ?: $this->serverParams);
+        $headers = parse_server_headers($serverParams ?: $this->serverParams);
         $uploadFileFactory = new UploadedFileFactory();
         
         return new ServerRequest(
@@ -77,7 +77,7 @@ class ServerRequestFactory implements ServerRequestFactoryInterface
                         $file['type'],
                     );
                 },
-                normalizeServerFiles($this->files),
+                normalize_server_files($this->files),
             ),
         );
     }

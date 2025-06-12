@@ -7,7 +7,7 @@
         "files": [
             "functions/assert_server_file.php",
             "functions/normalize_server_files.php",
-            "functions/parse_headers_from_server.php"
+            "functions/parse_server_headers.php"
         ]
     },
     "autoload-dev": {

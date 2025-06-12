@@ -12,11 +12,11 @@ use function is_array;
 /**
  * @throws AssertionError
  */
-function normalizeServerFiles(array $files): array
+function normalize_server_Files(array $files): array
 {
     $parsedFiles = [];
     foreach ($files as $file) {
-        assertServerFile($file);
+        assert_server_file($file);
         
         if (0 === ($file['size'][0] ?? $file['size'])) {
             continue;

@@ -14,7 +14,7 @@ use function substr;
  *
  * @return array<string, array>
  */
-function parseHeadersFromServer(array $server): array
+function parse_server_headers(array $server): array
 {
     $headers = [];
     foreach ($server as $key => $value) {
