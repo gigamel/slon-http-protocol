@@ -8,7 +8,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\StreamInterface;
 use RuntimeException;
-use Slon\Http\Protocol\Stream\Stream;
+use Slon\Http\Protocol\Stream;
 
 class StreamTest extends TestCase
 {

@@ -9,7 +9,7 @@ use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UriInterface;
 use Slon\Http\Protocol\Message\Params;
 use Slon\Http\Protocol\Message\QueryParams;
-use Slon\Http\Protocol\ServerMessage\UploadedFiles;
+use Slon\Http\Protocol\Message\UploadedFiles;
 
 use function is_array;
 use function is_object;

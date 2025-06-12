@@ -6,8 +6,8 @@ namespace Slon\Http\Protocol;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
-use Slon\Http\Protocol\ServerMessage\Code;
-use Slon\Http\Protocol\Stream\Stream;
+use Slon\Http\Protocol\Enum\Code;
+use Slon\Http\Enum\Version;
 
 use function assert;
 use function in_array;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Slon\Http\Protocol\ServerMessage;
+namespace Slon\Http\Protocol\Message;
 
 use Psr\Http\Message\UploadedFileInterface;
 

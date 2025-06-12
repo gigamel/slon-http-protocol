@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Slon\Http\Protocol\Message;
 
-class Headers implements HeadersInterface
+class Headers
 {
     protected array $headers = [];
 

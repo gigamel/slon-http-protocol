@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Slon\Http\Protocol\ClientMessage;
+namespace Slon\Http\Protocol\Enum;
 
 final readonly class Method
 {

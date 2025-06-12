@@ -6,8 +6,8 @@ namespace Slon\Http\Protocol;
 
 use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\StreamInterface;
+use Slon\Http\Enum\Version;
 use Slon\Http\Protocol\Message\Headers;
-use Slon\Http\Protocol\Message\HeadersInterface;
 
 use function assert;
 use function in_array;
@@ -16,7 +16,7 @@ abstract class AbstractMessage implements MessageInterface
 {
     protected StreamInterface $body;
 
-    protected HeadersInterface $headers;
+    protected Headers $headers;
     
     protected string $protocolVersion;
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Slon\Http\Protocol\Stream;
+namespace Slon\Http\Protocol;
 
 use Psr\Http\Message\StreamInterface;
 use RuntimeException;

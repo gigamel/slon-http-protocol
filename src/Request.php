@@ -7,7 +7,8 @@ namespace Slon\Http\Protocol;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UriInterface;
-use Slon\Http\Protocol\ClientMessage\Method;
+use Slon\Http\Enum\Version;
+use Slon\Http\Protocol\Enum\Method;
 use Slon\Http\Protocol\Stream\PhpInputStream;
 
 use function assert;
@@ -20,7 +21,7 @@ class Request extends AbstractMessage implements RequestInterface
 
     protected string $method;
     
-    protected string $requestTarget = '';
+    protected ?string $requestTarget = null;
 
     public function __construct(
         string $method,
@@ -44,15 +45,16 @@ class Request extends AbstractMessage implements RequestInterface
     
     public function getRequestTarget(): string
     {
-        if ('' === $this->requestTarget) {
-            $this->requestTarget .= $this->uri->getPath();
+        if (null === $this->requestTarget) {
+            $this->requestTarget = $this->uri->getPath() ?: '/';
+            
             if ($this->uri->getQuery()) {
                 $this->requestTarget .= '?' . $this->uri->getQuery();
             }
+            
             if ($this->uri->getFragment()) {
                 $this->requestTarget .= '#' . $this->uri->getFragment();
             }
-            $this->requestTarget = $this->requestTarget ?: '/';
         }
         
         return $this->requestTarget;

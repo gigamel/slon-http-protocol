@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Slon\Http\Protocol;
+namespace Slon\Http\Enum;
 
 final class Version
 {
