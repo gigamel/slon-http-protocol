@@ -10,6 +10,7 @@ use Psr\Http\Message\UriInterface;
 use Slon\Http\Protocol\Message\Params;
 use Slon\Http\Protocol\Message\QueryParams;
 use Slon\Http\Protocol\Message\UploadedFiles;
+use Slon\Http\Protocol\Stream\PhpInputStream;
 
 use function is_array;
 use function is_object;
@@ -39,7 +40,13 @@ class ServerRequest extends Request implements ServerRequestInterface
         ?StreamInterface $body = null,
         string $protocolVersion = Version::HTTP_1_1,
     ) {
-        parent::__construct($method, $uri, $headers, $body, $protocolVersion);
+        parent::__construct(
+            $method,
+            $uri,
+            $headers,
+            $body ?? new PhpInputStream(),
+            $protocolVersion,
+        );
         
         $this->queryParams = new QueryParams($queryParams);
         $this->serverParams = new Params($serverParams);

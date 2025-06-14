@@ -6,8 +6,9 @@ namespace Slon\Http\Protocol;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
-use Slon\Http\Protocol\Enum\Code;
 use Slon\Http\Enum\Version;
+use Slon\Http\Protocol\Enum\Code;
+use Slon\Http\Protocol\Stream\TempStream;
 
 use function assert;
 use function in_array;
@@ -26,7 +27,7 @@ class Response extends AbstractMessage implements ResponseInterface
         ?StreamInterface $body = null,
     ) {
         if (!$body instanceof StreamInterface) {
-            $body = new Stream('php://temp', 'w+');
+            $body = new TempStream();
         }
         
         $body->write($content);
