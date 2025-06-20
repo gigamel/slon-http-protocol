@@ -6,7 +6,7 @@ namespace Slon\Http\Protocol\Message;
 
 use function is_array;
 
-class QueryParams extends Params
+final class QueryParams extends Params
 {
     /**
      * @inheritDoc

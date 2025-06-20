@@ -6,7 +6,7 @@ namespace Slon\Http\Protocol\Stream;
 
 use Slon\Http\Protocol\Stream;
 
-final class TempStream
+final class TempStream extends Stream
 {
     public function __construct()
     {

@@ -6,8 +6,8 @@ namespace Slon\Http\Protocol;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
-use Slon\Http\Enum\Version;
 use Slon\Http\Protocol\Enum\Code;
+use Slon\Http\Protocol\Enum\Version;
 use Slon\Http\Protocol\Stream\TempStream;
 
 use function assert;

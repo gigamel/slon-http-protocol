@@ -12,23 +12,13 @@ use Slon\Http\Protocol\Message\Headers;
 use function assert;
 use function in_array;
 
-abstract class AbstractMessage implements MessageInterface
+trait MessageTrait
 {
     protected StreamInterface $body;
 
     protected Headers $headers;
     
     protected string $protocolVersion;
-
-    public function __construct(
-        StreamInterface $body,
-        array $headers = [],
-        string $protocolVersion = Version::HTTP_1_1,
-    ) {
-        $this->body = $body;
-        $this->headers = new Headers($headers);
-        $this->setProtocolVersion($protocolVersion);
-    }
     
     public function getBody(): StreamInterface
     {
@@ -60,10 +50,8 @@ abstract class AbstractMessage implements MessageInterface
         return $this->headers->has($name);
     }
 
-    public function withAddedHeader(
-        string $name,
-        $value,
-    ): MessageInterface {
+    public function withAddedHeader(string $name, $value): MessageInterface
+    {
         $cloned = clone $this;
         $cloned->headers->add($name, $value);
         return $cloned;
@@ -80,10 +68,8 @@ abstract class AbstractMessage implements MessageInterface
         return $cloned;
     }
 
-    public function withHeader(
-         string $name,
-         $value,
-    ): MessageInterface {
+    public function withHeader(string $name, $value): MessageInterface
+    {
         $cloned = clone $this;
         $cloned->headers->set($name, $value);
         return $cloned;
@@ -103,7 +89,7 @@ abstract class AbstractMessage implements MessageInterface
     public function withoutHeader(string $name): MessageInterface
     {
         $cloned = clone $this;
-        $cloned->headers->remove($name, $value);
+        $cloned->headers->remove($name);
         return $cloned;
     }
     

@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace Slon\Http\Protocol;
 
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UriInterface;
+use Slon\Http\Protocol\Enum\Version;
+use Slon\Http\Protocol\Message\Headers;
 use Slon\Http\Protocol\Message\Params;
 use Slon\Http\Protocol\Message\QueryParams;
 use Slon\Http\Protocol\Message\UploadedFiles;
@@ -14,9 +15,13 @@ use Slon\Http\Protocol\Stream\PhpInputStream;
 
 use function is_array;
 use function is_object;
+use function is_string;
 
-class ServerRequest extends Request implements ServerRequestInterface
+class ServerRequest implements ServerRequestInterface
 {
+    use MessageTrait;
+    use RequestTrait;
+    
     protected QueryParams $queryParams;
     
     protected Params $serverParams;
@@ -34,25 +39,24 @@ class ServerRequest extends Request implements ServerRequestInterface
         string|UriInterface $uri,
         array $headers = [],
         array $queryParams = [],
+        array $parsedBody = [],
         array $serverParams = [],
         array $cookieParams = [],
         array $uploadedFiles = [],
-        ?StreamInterface $body = null,
+        array $attributes = [],
         string $protocolVersion = Version::HTTP_1_1,
     ) {
-        parent::__construct(
-            $method,
-            $uri,
-            $headers,
-            $body ?? new PhpInputStream(),
-            $protocolVersion,
-        );
-        
+        $this->setMethod($method);
+        $this->uri = is_string($uri) ? new Uri($uri) : $uri;
+        $this->headers = new Headers($headers);
         $this->queryParams = new QueryParams($queryParams);
+        $this->body = new PhpInputStream();
+        $this->parsedBody = $parsedBody;
         $this->serverParams = new Params($serverParams);
         $this->cookieParams = new Params($cookieParams);
         $this->uploadedFiles = new UploadedFiles($uploadedFiles);
-        $this->attributes = new Params();
+        $this->attributes = new Params($attributes);
+        $this->setProtocolVersion($protocolVersion);
     }
     
     public function getAttribute(string $name, $default = null): mixed

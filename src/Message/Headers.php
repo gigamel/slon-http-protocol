@@ -4,7 +4,18 @@ declare(strict_types=1);
 
 namespace Slon\Http\Protocol\Message;
 
-class Headers
+use InvalidArgumentException;
+
+use function array_key_exists;
+use function implode;
+use function in_array;
+use function is_string;
+use function sprintf;
+use function strtolower;
+use function str_replace;
+use function ucwords;
+
+final class Headers
 {
     protected array $headers = [];
 
@@ -17,13 +28,12 @@ class Headers
     
     public function add(string $name, string|array $value): void
     {
-        if (\is_string($value)) {
+        if (is_string($value)) {
             $value = [$value];
         }
         
-        $name = $this->nameToLowerCase($name);
         foreach ($value as $chunk) {
-            $this->addHeaderChunk($name, $chunk);
+            $this->addHeaderChunk($this->nameToLowerCase($name), $chunk);
         }
     }
     
@@ -40,7 +50,7 @@ class Headers
     public function getLine(string $name): string
     {
         if ($this->has($name)) {
-            return implode('; ', $this->get($name));
+            return implode(';', $this->get($name));
         }
         
         return '';
@@ -48,7 +58,7 @@ class Headers
 
     public function has(string $name): bool
     {
-        return \array_key_exists(
+        return array_key_exists(
             $this->nameToLowerCase($name),
             $this->headers,
         );
@@ -65,17 +75,17 @@ class Headers
         $this->add($name, $value);
     }
     
-    protected function nameToLowerCase(string $name): string
+    private function nameToLowerCase(string $name): string
     {
-        return \strtolower(\str_replace('_', '-', $name));
+        return strtolower(str_replace('_', '-', $name));
     }
     
-    protected function nameToUpperCase(string $name): string
+    private function nameToUpperCase(string $name): string
     {
-        return \ucwords($name, '-');
+        return ucwords($name, '-');
     }
     
-    protected function headersToProtocol(array $headers): array
+    private function headersToProtocol(array $headers): array
     {
         $normalized = [];
         foreach ($headers as $name => $value) {
@@ -85,18 +95,16 @@ class Headers
         return $normalized;
     }
     
-    protected function addHeaderChunk(string $name, string $chunk): void
+    private function addHeaderChunk(string $name, string $chunk): void
     {
         if (empty($chunk)) {
-            throw new \InvalidArgumentException(
-                \sprintf(
-                    'Header "%s" chunk is empty',
-                    $name,
-                ),
-            );
+            throw new InvalidArgumentException(sprintf(
+                'Header "%s" chunk is empty',
+                $name,
+            ));
         }
         
-        if (\in_array($chunk, $this->headers[$name] ?? [], true)) {
+        if (in_array($chunk, $this->headers[$name] ?? [], true)) {
             return;
         }
         

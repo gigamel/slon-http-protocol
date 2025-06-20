@@ -6,7 +6,7 @@ namespace Slon\Http\Protocol\Message;
 
 use Psr\Http\Message\UploadedFileInterface;
 
-class UploadedFiles
+final class UploadedFiles
 {
     protected array $uploadedFiles = [];
 

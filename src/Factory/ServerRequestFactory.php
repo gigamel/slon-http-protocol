@@ -8,8 +8,9 @@ use InvalidArgumentException;
 use Psr\Http\Message\ServerRequestFactoryInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
+use Slon\Http\Protocol\Enum\Method;
 use Slon\Http\Protocol\ServerRequest;
-use Slon\Http\Protocol\Stream\Stream;
+use Slon\Http\Protocol\Stream;
 use Slon\Http\Protocol\Uri;
 
 use function array_map;
@@ -37,8 +38,8 @@ class ServerRequestFactory implements ServerRequestFactoryInterface
             $_COOKIE,
             $_FILES,
         ))->createServerRequest(
-            $_SERVER['REQUEST_METHOD'],
-            $_SERVER['REQUEST_URI'],
+            $_SERVER['REQUEST_METHOD'] ?? Method::GET,
+            $_SERVER['REQUEST_URI'] ?? '',
         );
     }
     
@@ -65,6 +66,7 @@ class ServerRequestFactory implements ServerRequestFactoryInterface
             $uri,
             $headers,
             $this->queryParams,
+            $this->formParams,
             $serverParams ?: $this->serverParams,
             $this->cookies ?: ($headers['cookie'] ?? []),
             array_map(
