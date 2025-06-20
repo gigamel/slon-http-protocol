@@ -8,13 +8,16 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 use Slon\Http\Protocol\Enum\Code;
 use Slon\Http\Protocol\Enum\Version;
+use Slon\Http\Protocol\Message\Headers;
 use Slon\Http\Protocol\Stream\TempStream;
 
 use function assert;
 use function in_array;
 
-class Response extends AbstractMessage implements ResponseInterface
+class Response implements ResponseInterface
 {
+    use MessageTrait;
+    
     protected int $statusCode;
     
     protected string $reasonPhrase;
@@ -30,13 +33,14 @@ class Response extends AbstractMessage implements ResponseInterface
             $body = new TempStream();
         }
         
-        $body->write($content);
-        $body->rewind();
-        
-        parent::__construct($body, $headers, $protocolVersion);
+        $this->body = $body;
+        $this->body->write($content);
+        $this->body->rewind();
         
         $this->setStatusCode($statusCode);
+        $this->headers = new Headers($headers);
         $this->setReasonPhrase(Code::TEXT[$this->statusCode] ?? 'Unknown');
+        $this->setProtocolVersion($protocolVersion);
     }
     
     public function getReasonPhrase(): string
