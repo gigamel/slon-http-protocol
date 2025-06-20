@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Slon\Http\Protocol\Stream;
 
-use Slon\Http\Protocol\Stream\Stream;
+use Slon\Http\Protocol\Stream;
 
 final class PhpInputStream extends Stream
 {
