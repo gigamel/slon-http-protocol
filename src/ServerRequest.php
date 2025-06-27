@@ -11,7 +11,7 @@ use Slon\Http\Protocol\Message\Headers;
 use Slon\Http\Protocol\Message\Params;
 use Slon\Http\Protocol\Message\QueryParams;
 use Slon\Http\Protocol\Message\UploadedFiles;
-use Slon\Http\Protocol\Stream\PhpInputStream;
+use Slon\Streams\PhpInputStream;
 
 use function is_array;
 use function is_object;

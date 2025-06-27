@@ -8,7 +8,7 @@ use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\UriInterface;
 use Slon\Http\Protocol\Enum\Version;
 use Slon\Http\Protocol\Message\Headers;
-use Slon\Http\Protocol\Stream\MemoryStream;
+use Slon\Streams\MemoryStream;
 
 use function is_string;
 

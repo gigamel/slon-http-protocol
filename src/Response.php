@@ -9,7 +9,7 @@ use Psr\Http\Message\StreamInterface;
 use Slon\Http\Protocol\Enum\Code;
 use Slon\Http\Protocol\Enum\Version;
 use Slon\Http\Protocol\Message\Headers;
-use Slon\Http\Protocol\Stream\TempStream;
+use Slon\Streams\TempStream;
 
 use function assert;
 use function in_array;

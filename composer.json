@@ -1,5 +1,13 @@
 {
     "name": "slon/http-protocol",
+    "require": {
+        "slon/streams": "dev-main",
+        "psr/http-message": "^2.0",
+        "psr/http-factory": "^1.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^12.1"
+    },
     "autoload": {
         "psr-4": {
             "Slon\\Http\\Protocol\\": "src/"
@@ -15,11 +23,10 @@
             "Slon\\Http\\Protocol\\Tests\\": "tests/"
         }
     },
-    "require-dev": {
-        "phpunit/phpunit": "^12.1"
-    },
-    "require": {
-        "psr/http-message": "^2.0",
-        "psr/http-factory": "^1.1"
+    "repositories": {
+        "slon/streams": {
+            "type": "vcs",
+            "url": "https://github.com/gigamel/slon-streams.git"
+        }
     }
 }

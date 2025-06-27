@@ -10,8 +10,8 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
 use Slon\Http\Protocol\Enum\Method;
 use Slon\Http\Protocol\ServerRequest;
-use Slon\Http\Protocol\Stream;
 use Slon\Http\Protocol\Uri;
+use Slon\Streams\Stream;
 
 use function array_map;
 use function is_string;

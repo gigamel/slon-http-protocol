@@ -10,7 +10,7 @@ use InvalidArgumentException;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UploadedFileInterface;
 use RuntimeException;
-use Slon\Http\Protocol\Stream;
+use Slon\Streams\Stream;
 
 use function dirname;
 use function is_file;
