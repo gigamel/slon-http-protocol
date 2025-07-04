@@ -9,7 +9,6 @@ use InvalidArgumentException;
 use function array_key_exists;
 use function ctype_digit;
 use function is_numeric;
-use function is_scalar;
 use function sprintf;
 
 class Params
@@ -55,10 +54,11 @@ class Params
         string $name,
         mixed $value,
     ): mixed {
-        if (!is_scalar($value)) {
+        if (is_resource($value) || is_object($value)) {
             throw new InvalidArgumentException(sprintf(
-                'Query param "%s" must be of scalar',
+                'Detected object or resource "%s" in "%s"',
                 $name,
+                static::class,
             ));
         }
         
